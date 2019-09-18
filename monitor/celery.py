@@ -11,10 +11,14 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-	'atualiza_temperatura':{
-		'task': 'temperatura.tasks.atualiza_temperatura',
-		'schedule':crontab(minute=0, hour='*/1')
+	'get_temperature':{
+		'task': 'temperatura.tasks.get_temperature',
+		'schedule': crontab(minute=0, hour='*/1')
 	},
+	'delete_temperature':{
+		'task': 'temperatura.tasks.delete_temperature',
+		'schedule': crontab()
+	}
 }
 
 @app.task(bind=True)
