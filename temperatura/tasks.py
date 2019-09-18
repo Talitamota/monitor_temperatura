@@ -19,3 +19,11 @@ def get_temperature():
 				time=temperature['time'],
 				city=city[0]
 			)
+
+@app.task
+def delete_temperature():
+	cities = City.objects.all()
+	if cities:
+		for city in cities:
+			if city.temps.all().count() > 30:
+				city.temps.first().delete()
