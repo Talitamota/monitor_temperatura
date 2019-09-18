@@ -1,11 +1,14 @@
 import datetime
 import requests
+from django.apps import apps
 
-from temperatura.models import City, Temperature
+City = apps.get_model('temperatura.City')
+Temperature = apps.get_model('temperatura.Temperature')
+
 
 class GetTemperature:
 
-	def get_woeid(self,cidade):
+	def get_woeid(self,city):
 		request_inf = {
 			'url': 'https://api.hgbrasil.com/stats/find_woeid?',
 			'method': 'get',
@@ -13,7 +16,7 @@ class GetTemperature:
 				'key': '17284dd0',
 				'format': 'json-cors',
 				'sdk_version': 'console',
-				'city_name': cidade
+				'city_name': city
 			},
 		}
 
@@ -25,18 +28,17 @@ class GetTemperature:
 
 			return woeid
 
-	def get_lista_cidades(self):
-		lista = list(City.objects.all().values_list('city', flat=True))
-		return lista
+	def get_cities_list(self):
+		return list(City.objects.all().values_list('city', flat=True))
 
-	def get_lista_woeids(self):
-		lista_cidades = self.get_lista_cidades()
-		lista_woeids = []
-		if lista_cidades:
-			lista_woeids = [self.get_woeid(cidade) for cidade in lista_cidades]
-		return lista_woeids
+	def get_woeids_list(self):
+		cities_list = self.get_cities_list()
+		woeids_list = []
+		if cities_list:
+			woeids_list = [self.get_woeid(city) for city in cities_list]
+		return woeids_list
 
-	def get_temperatura(self, woeid):
+	def get_temperature(self, woeid):
 		request_inf = {
 			'url': 'https://api.hgbrasil.com/weather?',
 			'method': 'get',
@@ -47,11 +49,11 @@ class GetTemperature:
 
 		response = requests.request(**request_inf)
 
-		temperatura = response.json()['results']
+		temperature = response.json()['results']
 
-		return temperatura
+		return temperature
 
 	def get_temperature_list(self):
-		lista_woeids = self.get_lista_woeids()
-		lista_temperaturas = [self.get_temperatura(woeid) for woeid in lista_woeids]
-		return lista_temperaturas
+		woeids_list = self.get_woeids_list()
+		temperature_list = [self.get_temperature_list(woeid) for woeid in woeids_list]
+		return temperature_list
