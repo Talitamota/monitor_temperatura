@@ -1,20 +1,21 @@
 from monitor.celery import app
+from django.apps import apps
+from .services.get_temperatura import GetTemperature
 
-from temperatura.models import City, Temperature
-
-from .services.get_temperatura import GetTemperatura
-
+City = apps.get_model('temperatura.City')
+Temperature = apps.get_model('temperatura.Temperature')
 
 @app.task
-def atualiza_temperatura():
-	get_temperatura = GetTemperatura()
-	lista_temperaturas = get_temperatura.get_lista_temperaturas()
-	if lista_temperaturas:
-		for temperatura in lista_temperaturas:
-			cidade = City.objects.filter(city__iexact=temperatura['city_name'])
+def get_temperature():
+	temperature = GetTemperature()
+	temperature_list = temperature.get_temperature_list()
+
+	if temperature_list:
+		for temperature in temperature_list:
+			city = City.objects.filter(city__iexact=temperature['city_name'])
 			Temperature.objects.create(
-				temp=temperatura['temp'],
-				date=temperatura['date'],
-				time=temperatura['time'],
-				city=cidade[0]
+				temp=temperature['temp'],
+				date=temperature['date'],
+				time=temperature['time'],
+				city=city[0]
 			)

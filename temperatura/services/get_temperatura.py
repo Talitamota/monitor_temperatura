@@ -3,7 +3,7 @@ import requests
 
 from temperatura.models import City, Temperature
 
-class GetTemperatura:
+class GetTemperature:
 
 	def get_woeid(self,cidade):
 		request_inf = {
@@ -51,7 +51,7 @@ class GetTemperatura:
 
 		return temperatura
 
-	def get_lista_temperaturas(self):
+	def get_temperature_list(self):
 		lista_woeids = self.get_lista_woeids()
 		lista_temperaturas = [self.get_temperatura(woeid) for woeid in lista_woeids]
 		return lista_temperaturas
