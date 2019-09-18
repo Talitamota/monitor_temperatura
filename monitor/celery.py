@@ -13,7 +13,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
 	'atualiza_temperatura':{
 		'task': 'temperatura.tasks.atualiza_temperatura',
-		'schedule':crontab()
+		'schedule':crontab(minute=0, hour='*/1')
 	},
 }
 
