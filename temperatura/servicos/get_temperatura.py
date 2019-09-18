@@ -8,6 +8,16 @@ Temperature = apps.get_model('temperatura.Temperature')
 
 class GetTemperature:
 
+	def check_status_code(self,response):
+		if response.status_code == 200:
+			return response
+		raise Exception(
+				"StatusCode: {}\n{}".format(
+					response.status_code,
+					response.text
+					)
+		)
+
 	def get_woeid(self,city):
 		request_inf = {
 			'url': 'https://api.hgbrasil.com/stats/find_woeid?',
@@ -21,6 +31,8 @@ class GetTemperature:
 		}
 
 		response = requests.request(**request_inf)
+
+		self.check_status_code(response)
 
 		woeid = response.json()['woeid']
 
@@ -55,5 +67,5 @@ class GetTemperature:
 
 	def get_temperature_list(self):
 		woeids_list = self.get_woeids_list()
-		temperature_list = [self.get_temperature_list(woeid) for woeid in woeids_list]
+		temperature_list = [self.get_temperature(woeid) for woeid in woeids_list]
 		return temperature_list

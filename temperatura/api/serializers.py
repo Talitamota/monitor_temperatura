@@ -1,14 +1,16 @@
 from rest_framework.serializers import ModelSerializer
 from django.core.exceptions import ValidationError
-from temperatura.models import City
+from django.apps import apps
+
+City = apps.get_model('temperatura.City')
 
 
-class CidadeSerializer(ModelSerializer):
+class CitySerializer(ModelSerializer):
 
 	def validate(self, data):
 		if data['city']:
-			cidade = City.objects.filter(city__iexact=data['city'])
-		if cidade:
+			city = City.objects.filter(city__iexact=data['city'])
+		if city:
 			raise ValidationError("cidade with this nome already exists.")
 		return data
 

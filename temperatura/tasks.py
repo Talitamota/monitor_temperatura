@@ -1,6 +1,6 @@
 from monitor.celery import app
 from django.apps import apps
-from .services.get_temperatura import GetTemperature
+from .servicos.get_temperatura import GetTemperature
 
 City = apps.get_model('temperatura.City')
 Temperature = apps.get_model('temperatura.Temperature')
