@@ -11,6 +11,7 @@ djangorestframework = "*"
 celery = "*"
 requests = "*"
 unidecode = "*"
+model-mommy = "*"
 
 [requires]
 python_version = "3.7"
