@@ -11,8 +11,8 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-	'printa_mensagem_no_termial':{
-		'task': 'temperatura.tasks.testando_a_task',
+	'atualiza_temperatura':{
+		'task': 'temperatura.tasks.atualiza_temperatura',
 		'schedule':crontab()
 	},
 }

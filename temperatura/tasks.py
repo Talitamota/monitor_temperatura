@@ -75,7 +75,7 @@ def get_lista_temperaturas():
 
 
 @app.task
-def testando_a_task():
+def atualiza_temperatura():
 	lista_temperaturas = get_lista_temperaturas()
 	if lista_temperaturas:
 		for temperatura in lista_temperaturas:
