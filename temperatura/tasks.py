@@ -2,7 +2,7 @@ from monitor.celery import app
 import datetime
 import requests
 
-from temperatura.models import Cidade, Temperatura
+from temperatura.models import City, Temperature
 
 
 def check_status_code(response):
@@ -40,7 +40,7 @@ def get_woeid(cidade):
 
 
 def get_lista_cidades():
-	lista = list(Cidade.objects.all().values_list('city', flat=True))
+	lista = list(City.objects.all().values_list('city', flat=True))
 	return lista
 
 
@@ -79,10 +79,10 @@ def testando_a_task():
 	lista_temperaturas = get_lista_temperaturas()
 	if lista_temperaturas:
 		for temperatura in lista_temperaturas:
-			cidade = Cidade.objects.filter(city__iexact=temperatura['city_name'])
-			Temperatura.objects.create(
-				valor=temperatura['temp'],
-				data=temperatura['date'],
-				hora=temperatura['time'],
-				cidade=cidade[0]
+			cidade = City.objects.filter(city__iexact=temperatura['city_name'])
+			Temperature.objects.create(
+				temp=temperatura['temp'],
+				date=temperatura['date'],
+				time=temperatura['time'],
+				city=cidade[0]
 			)

@@ -1,41 +1,42 @@
 from unidecode import unidecode
 from django.db import models
 
-
-
-class Cidade(models.Model):
+class City(models.Model):
 	city = models.CharField(max_length=100, unique=True)
-	custom_city = models.CharField(max_length=100, unique=True)
+	custom_name_city = models.CharField(max_length=100, unique=True)
 	woeid = models.CharField(max_length=100, blank=True)
 
 	def temperatures(self):
-		temperaturas = self.temperaturas.all()
-		dicionario = {}
-		lista_dicionarios = []
-		if temperaturas:
-			for temperatura in temperaturas:
-				dicionario = {
-					'date': temperatura.data +' '+ temperatura.hora,
-					'temperature': temperatura.valor
+		temperatures = self.temps.all()
+		dictionary = {}
+		list_dictionaries = []
+		if temperatures:
+			for temperature in temperatures:
+				dictionary = {
+					'date': temperature.date +' '+ temperature.time,
+					'temperature': temperature.temp
 				}
-				lista_dicionarios.append(dicionario)
-		return lista_dicionarios
+				list_dictionaries.append(dictionary)
+		return list_dictionaries
+
+	def formats_city_name(self):
+		pass
 
 	def __str__(self):
 		return self.city
 
 	def save(self, *args, **kwargs):
-		self.custom_city = self.city.lower().replace(' ','')
-		self.city = self.city.lower().title()
-		super(Cidade, self).save(*args, **kwargs)
+		self.city = unidecode(self.city).lower()
+		self.custom_name_city = self.city.replace(' ','')
+		super(City, self).save(*args, **kwargs)
 
 
-class Temperatura(models.Model):
-	valor = models.CharField(max_length=2)
-	data = models.CharField(max_length=10)
-	hora = models.CharField(max_length=5)
-	cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE, related_name='temperaturas')
+class Temperature(models.Model):
+	temp = models.CharField(max_length=2)
+	date = models.CharField(max_length=10)
+	time = models.CharField(max_length=5)
+	city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='temps')
 
 	def __str__(self):
-		return str(self.valor)
+		return str(self.temp)
 
