@@ -9,8 +9,6 @@ Solução para monitoramento da variação de temperatura de cidades.
 
 ## Instalação e execução em um ambiente local
 
-### Mac:
-
     $ pipenv install --three
     $ pipenv shell
     $ python manage.py migrate
