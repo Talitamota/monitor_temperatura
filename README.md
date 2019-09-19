@@ -15,6 +15,15 @@ Solução para monitoramento da variação de temperatura de cidades.
     $ pipenv shell
     $ python manage.py migrate
     $ python manage.py runserver
+    
+## Subindo o celery
+
+    $ celery -A monitor beat (Execute em outra janela do terminal)
+
+## Fazendo chamadas ao celery
+
+    $ celery -A monitor worker -l info (Execute em outra janela do terminal)
+
 
 Na máquina local acesse http://localhost:8000/city/
 
